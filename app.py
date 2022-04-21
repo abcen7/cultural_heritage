@@ -13,7 +13,9 @@ import sqlite3
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 app.config['PERMANENT_SESSION_LIFETIME'] = datetime.timedelta(days=365)
+
 app.config["DEBUG"] = True
+
 
 # Добавить ресурсы
 api = Api(app)
@@ -39,9 +41,8 @@ def logout():
 
 
 @app.route("/")
+@login_required
 def index():
-    _object = session.query(Object).first()
-    print(_object)
     return render_template("index.html")
 
 

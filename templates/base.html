@@ -12,6 +12,13 @@
     <div class="wrapper">
         <div class="header">
             <p>I am header</p>
+            {% if current_user.is_authenticated %}
+                {% if current_user.is_admin() %}
+                <p>Admin</p>
+                {% else %}
+                <p>User</p>
+                {% endif %}
+            {% endif %}
         </div>
         <div class="main">
             {% block main %}

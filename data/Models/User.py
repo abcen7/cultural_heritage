@@ -1,8 +1,8 @@
 ﻿import datetime
 
-from sqlalchemy import Column, String, Integer, DateTime
+from sqlalchemy import Column, String, Integer, DateTime, ForeignKey
 from werkzeug.security import generate_password_hash, check_password_hash
-
+from sqlalchemy import orm
 from Classes.SqlAlchemyDatabase import SqlAlchemyBase
 from flask_login import UserMixin
 
@@ -19,6 +19,8 @@ class User(SqlAlchemyBase, UserMixin):
     hashed_password = Column(String, nullable=True)
     created_at = Column(DateTime, default=datetime.datetime.now)
     updated_at = Column(DateTime, default=datetime.datetime.now, onupdate=datetime.datetime.now)
+    role_id = Column(Integer, ForeignKey("roles.id"), default=1)
+    role = orm.relation('Roles')
 
     def __init__(self, name: str, surname: str, age: int, password: str, email: str):
         self.name = name
@@ -35,3 +37,6 @@ class User(SqlAlchemyBase, UserMixin):
 
     def check_password(self, password: str) -> bool:
         return check_password_hash(self.hashed_password, password)
+
+    def is_admin(self):
+        return self.role.role == "admin"
