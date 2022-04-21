@@ -21,6 +21,7 @@ class Object(SqlAlchemyBase):
     updated_at = Column(DateTime, default=datetime.datetime.now, onupdate=datetime.datetime.now)
     category = orm.relation("Category")
     type = orm.relation("Type")
+    comment = orm.relationship("Comment", uselist=False, back_populates="object")
 
     def __repr__(self):
         return f'{self.type.title} ; {self.category.title}'

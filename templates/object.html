@@ -11,6 +11,25 @@
         <p>Вид объекта >> {{ obj.type.title }}</p>
     </div>
     <div class="object__comments">
-
+        {% for comment in comments %}
+            <div class="comment_{{ comment.id }}">
+                <p>{{ comment.created_by }}</p>
+                <p>{{ comment.text }}</p>
+            </div>
+        {% endfor %}
+        {% if current_user.is_authenticated %}
+            {% for field in form if field.name != 'csrf_token' %}
+                {% if field.errors %}
+                    {% for error in field.errors %}
+                        <div class="message message-error">{{ error }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+            <form action="" method="post" novalidate>
+                {{ form.csrf_token }}
+                {{ form.comment }}
+                <button type="submit">send</button>
+            </form>
+        {% endif %}
     </div>
 {% endblock %}
