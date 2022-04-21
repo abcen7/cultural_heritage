@@ -1,19 +1,34 @@
 {% extends "base.html" %}
 
 {% block main %}
-    <h1>Объект</h1>
-    <div class="object_{{ obj.id }}">
-        <h1>{{ obj.title }}</h1>
-        <p>Номер в реестре >> {{ obj.register_number }}</p>
-        <p>Регион >> {{ obj.region }}</p>
-        <p>Полный адрес >> {{ obj.full_address }}</p>
-        <p>Категория историко-культурного значения >> {{ obj.category.title }}</p>
-        <p>Вид объекта >> {{ obj.type.title }}</p>
+    <div class="list-group">
+        <h3>{{ obj.title }}</h3>
+        <table class="table">
+            <thead>
+                <tr class="table-primary">
+                    <th scope="col">Номер в реестрe</th>
+                    <th scope="col">Регион</th>
+                    <th scope="col">Полный адрес</th>
+                    <th scope="col">Категория историко-культурного значения</th>
+                    <th scope="col">Вид объекта</th>
+                </tr>
+
+            </thead>
+            <tbody>
+                <tr class="table-primary">
+                    <td scope="row">{{obj.register_number}}</td>
+                    <td scope="row">{{obj.region}}</td>
+                    <td scope="row">{{obj.full_address}}</td>
+                    <td scope="row">{{obj.category.title}}</td>
+                    <td scope="row">{{obj.type.title}}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
     <div class="object__comments">
         {% for comment in comments %}
-            <div class="comment_{{ comment.id }}">
-                <p>{{ comment.created_by }}</p>
+            <div class="border border-primary">
+                <div class="alert alert-info">{{ comment.created_by }}</div>
                 <p>{{ comment.text }}</p>
             </div>
         {% endfor %}

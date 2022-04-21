@@ -41,16 +41,16 @@ class AddObjectForm(FlaskForm):
         ]
     )
     choices = [category.title for category in session.query(Category).all()]
-    category = RadioField(
-        "Категория", choices=[],
+    category = SelectField(
+        "Категория", choices=choices,
         validators=[
             DataRequired(message=lang.get("data_required", ["Категория"])),
         ]
     )
 
     choices = [type.title for type in session.query(Type).all()]
-    type = RadioField(
-        "Тип", choices=[],
+    type = SelectField(
+        "Тип", choices=choices,
         validators=[
             DataRequired(message=lang.get("data_required", ["Тип"])),
         ]

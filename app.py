@@ -43,13 +43,18 @@ def logout():
 
 
 @app.route("/")
-@login_required
 def index():
     objects = session.query(Object).all()
     if objects:
         return render_template("index.html", objects=objects)
     else:
-        abort(403)
+        return render_template("error.html", error='К сожалению, объекты отсутсвуют')
+
+
+@app.route("/edit_object")
+@login_required
+def edit_object():
+    return render_template("error.html", error='Функция не готова')
 
 
 @app.route("/objects/<int:object_id>", methods=["GET", "POST"])

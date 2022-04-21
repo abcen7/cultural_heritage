@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import EmailField, PasswordField, BooleanField
+from wtforms import EmailField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired, Email, Length
 
 from Classes.Lang import Lang
@@ -22,4 +22,5 @@ class LoginForm(FlaskForm):
             Length(min=6, max=100, message=lang.get("field_min_len", ["Пароль", "6", "100"]))
         ]
     )
-    remember_me = BooleanField(lang.get("field_remember_me"))
+    remember_me = BooleanField("Запомнить меня")
+    submit = SubmitField("Войти")
