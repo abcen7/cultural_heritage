@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block main %}
+    <div class="main__login">
+        <h1>Авторизация</h1>
+        <form action="" method="post" novalidate>
+            <div class="messages">
+                {% for field in form if field.name != 'csrf_token' %}
+                    {% if field.errors %}
+                        {% for error in field.errors %}
+                            <div class="message message-error">{{ error }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+            {{ form.csrf_token }}
+            <div class="form-control">
+                {{ form.email.label }}<br>
+                {{ form.email(type="email", placeholder="Введите почту") }}<br>
+            </div>
+            <div class="form-control">
+                {{ form.password.label }}<br>
+                {{ form.password(type="password", placeholder="Введите пароль") }}<br>
+            </div>
+            <div class="form-control">
+                <label class="checkbox" for="remember_me">
+                    {{ form.remember_me(class="checkbox") }}
+                    <span>Запомнить меня</span>
+                </label>
+            </div>
+            <button type="submit">Войти</button>
+        </form>
+    </div>
+{% endblock %}
