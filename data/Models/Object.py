@@ -22,12 +22,5 @@ class Object(SqlAlchemyBase):
     category = orm.relation("Category")
     type = orm.relation("Type")
 
-    # def __init__(self, name: str, surname: str, age: int, password: str, email: str):
-    #     self.name = name
-    #     self.surname = surname
-    #     self.age = age
-    #     self.email = email
-    #     self._set_password(password)
-
     def __repr__(self):
         return f'{self.type.title} ; {self.category.title}'

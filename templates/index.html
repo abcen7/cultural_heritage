@@ -7,5 +7,14 @@
     </div>
     <div class="main__system">
         <p class="text_message">Осуществляя вход, Вы выражаете согласие с нашими <b>Условиями.</b> Чтобы узнать, как мы обрабатываем Ваши данные, ознакомьтесь с Политикой конфиденциальности и Политикой в отношении файлов cookie</p>
+    <div class="list__objects">
+            {% for obj in objects %}
+                <div class="object_{{ obj.id }}">
+                    <h1>{{ obj.title }}</h1>
+                    <img src="Картинка" alt="">
+                    <a href="/objects/{{ obj.id }}">Подробнее</a>
+                </div>
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}
