@@ -13,9 +13,7 @@ import sqlite3
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 app.config['PERMANENT_SESSION_LIFETIME'] = datetime.timedelta(days=365)
-
 app.config["DEBUG"] = True
-
 
 # Добавить ресурсы
 api = Api(app)
@@ -24,7 +22,7 @@ api = Api(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-db = SqlAlchemyDatabase(create=True)
+db = SqlAlchemyDatabase()
 session = db.create_session()
 
 
@@ -43,7 +41,20 @@ def logout():
 @app.route("/")
 @login_required
 def index():
-    return render_template("index.html")
+    objects = session.query(Object).all()
+    if objects:
+        return render_template("index.html", objects=objects)
+    else:
+        abort(403)
+
+
+@app.route("/objects/<int:object_id>")
+def describe_object(object_id):
+    obj = session.query(Object).filter(Object.id == object_id).first()
+    if obj:
+        return render_template("object.html", obj=obj)
+    else:
+        abort(404)
 
 
 @app.route('/login', methods=['GET', 'POST'])

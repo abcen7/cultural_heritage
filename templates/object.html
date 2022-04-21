@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block main %}
+    <h1>Объект</h1>
+    <div class="object_{{ obj.id }}">
+        <h1>{{ obj.title }}</h1>
+        <p>Номер в реестре >> {{ obj.register_number }}</p>
+        <p>Регион >> {{ obj.region }}</p>
+        <p>Полный адрес >> {{ obj.full_address }}</p>
+        <p>Категория историко-культурного значения >> {{ obj.category.title }}</p>
+        <p>Вид объекта >> {{ obj.type.title }}</p>
+    </div>
+    <div class="object__comments">
+
+    </div>
+{% endblock %}
