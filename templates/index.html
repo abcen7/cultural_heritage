@@ -7,13 +7,5 @@
     </div>
     <div class="main__system">
         <p class="text_message">Осуществляя вход, Вы выражаете согласие с нашими <b>Условиями.</b> Чтобы узнать, как мы обрабатываем Ваши данные, ознакомьтесь с Политикой конфиденциальности и Политикой в отношении файлов cookie</p>
-        <div class="main__system__buttons">
-            {% if not current_user.is_authenticated %}
-                <a class="button main_system_button" href="/login">Войти</a>
-                <a class="button main_system_button" href="/register">Зарегистрироваться</a>
-            {% else %}
-                <a class="button main_system_button" href="/logout">Выйти</a>
-            {% endif %}
-        </div>
     </div>
 {% endblock %}

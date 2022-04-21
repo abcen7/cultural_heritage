@@ -43,7 +43,8 @@ def logout():
 @app.route("/")
 @login_required
 def index():
-    return render_template("index.html")
+    blogs = session.query(Object).all()
+    return render_template("index.html", blogs=blogs)
 
 
 @app.route('/login', methods=['GET', 'POST'])
