@@ -1,8 +1,10 @@
 import datetime
 from flask import Flask, render_template, request, make_response, abort
 from Classes.SqlAlchemyDatabase import SqlAlchemyDatabase, SqlAlchemyBase
+from data.Forms.CommentForm import CommentForm
 from data.Forms.LoginForm import LoginForm
 from data.Forms.RegisterForm import RegisterForm
+from data.Models.Comment import Comment
 from data.Models.Object import Object
 from data.Models.User import User
 from werkzeug.utils import redirect
@@ -48,11 +50,24 @@ def index():
         abort(403)
 
 
-@app.route("/objects/<int:object_id>")
+@app.route("/objects/<int:object_id>", methods=["GET", "POST"])
 def describe_object(object_id):
     obj = session.query(Object).filter(Object.id == object_id).first()
+    comments = session.query(Comment).filter(Comment.belongs_to_object == object_id).all()
+    form = CommentForm()
+    if form.validate_on_submit():
+        comment = Comment(
+            text=form.comment.data,
+            belongs_to_object=object_id,
+            created_by=f"{current_user.name} {current_user.surname}"
+        )
+        session.add(comment)
+        session.commit()
+        print("SUCCESS")
+        return redirect("/")
+
     if obj:
-        return render_template("object.html", obj=obj)
+        return render_template("object.html", form=form, obj=obj, comments=comments)
     else:
         abort(404)
 
@@ -84,7 +99,8 @@ def reqister():
             surname=form.surname.data,
             password=form.password.data,
             age=int(form.age.data),
-            email=form.email.data)
+            email=form.email.data
+        )
         session.add(user)
         session.commit()
         return redirect('/login')
