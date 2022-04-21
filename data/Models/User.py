@@ -39,4 +39,4 @@ class User(SqlAlchemyBase, UserMixin):
         return check_password_hash(self.hashed_password, password)
 
     def is_admin(self):
-        return self.role.role == "admin"
+        return self.role_id == 2

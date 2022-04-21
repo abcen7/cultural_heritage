@@ -1,9 +1,12 @@
 import datetime
 from flask import Flask, render_template, request, make_response, abort
 from Classes.SqlAlchemyDatabase import SqlAlchemyDatabase, SqlAlchemyBase
+from data.Forms.Add_object import Add_object
 from data.Forms.LoginForm import LoginForm
 from data.Forms.RegisterForm import RegisterForm
+from data.Models.Category import Category
 from data.Models.Object import Object
+from data.Models.Type import Type
 from data.Models.User import User
 from werkzeug.utils import redirect
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
@@ -69,6 +72,33 @@ def login():
                                message="Неправильный логин или пароль",
                                form=form)
     return render_template('login.html', title='Авторизация', form=form)
+
+
+@app.route('/add_object', methods=['GET', 'POST'])
+@login_required
+def add_object():
+    form = Add_object()
+    if current_user.is_admin():
+        if form.validate_on_submit():
+            type = session.query(Type).filter(Type.title == form.type.data).first()
+            category = session.query(Category).filter(Category.title == form.category.data).first()
+            print(type.id, category)
+            object = Object(title=form.title.data,
+                            register_number=form.register_number.data,
+                            region=form.region.data,
+                            full_address=form.address.data,
+                            category_id=category.id,
+                            type_id=type.id,
+                            belonging_to_unesco=form.belonging_to_unesco.data,
+                            especially_valuable=form.especially_valuable.data,
+                            on_map=form.on_map.data)
+            session.add(object)
+            session.commit()
+            return render_template('index.html', message='Объект добавлен')
+        else:
+            return render_template('add_object.html', title='Добавление объекта', form=form)
+    else:
+        return render_template('error.html', error='У вас нет прав администратора')
 
 
 @app.route('/register', methods=['GET', 'POST'])

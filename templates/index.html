@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 
 {% block main %}
+    {% if message %}
+        <div class="alert alert-danger" role="alert">
+        {{ message }}
+        </div>
+    {% endif %}
     <div class="main__header">
         <img class="logo" src="/static/img/logo.svg" alt="">
         <h1>ADEMY</h1>

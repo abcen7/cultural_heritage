@@ -12,4 +12,4 @@ class Category(SqlAlchemyBase):
 
 
     def __repr__(self):
-        return '<Type {}>'.format(self.body)
+        return '<Type {}>'.format(self.title)

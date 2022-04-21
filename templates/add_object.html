@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block main %}
+<h1>Добавление объекта</h1>
+<script type="text/javascript">
+if (window.location.href.indexOf('reload')==-1) {
+    window.location.replace(window.location.href+'?reload');
+}
+</script>
+<form action="" method="post">
+    {{form.csrf_token}}
+    <p>
+        {{ form.title.label }}<br>
+        {{ form.title(class="form-control") }}<br>
+        {% for error in form.title.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+
+     <p>
+        {{ form.register_number.label }}<br>
+        {{ form.register_number(class="form-control") }}<br>
+        {% for error in form.register_number.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+     <p>
+        {{ form.region.label }}<br>
+        {{ form.region(class="form-control") }}<br>
+        {% for error in form.region.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.address.label }}<br>
+        {{ form.address(class="form-control") }}<br>
+        {% for error in form.address.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+     <p>
+        {{ form.category.label }}<br>
+        {{ form.category(class="form-control") }}<br>
+        {% for error in form.category.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+
+    <p>
+        {{ form.type.label }}<br>
+        {{ form.type(class="form-control") }}<br>
+        {% for error in form.type.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+     <p>
+        {{ form.belonging_to_unesco.label }}<br>
+        {{ form.belonging_to_unesco(class="form-control") }}<br>
+        {% for error in form.belonging_to_unesco.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.especially_valuable.label }}<br>
+        {{ form.especially_valuable(class="form-control") }}<br>
+        {% for error in form.especially_valuable.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.on_map.label }}<br>
+        {{ form.on_map(class="form-control") }}<br>
+        {% for error in form.on_map.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+    <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+</form>
+{% endblock %}

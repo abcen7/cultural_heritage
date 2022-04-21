@@ -11,4 +11,4 @@ class Type(SqlAlchemyBase):
     title = Column(String, nullable=False)
 
     def __repr__(self):
-        return '<Type {}>'.format(self.body)
+        return '<Type {}>'.format(self.title)
