@@ -10,14 +10,16 @@ from data.Models.Comment import Comment
 from data.Models.Object import Object
 from data.Models.Type import Type
 from data.Models.User import User
-from werkzeug.utils import redirect
+from werkzeug.utils import redirect, secure_filename
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from flask_restful import reqparse, abort, Api, Resource
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
-app.config['PERMANENT_SESSION_LIFETIME'] = datetime.timedelta(days=365)
+app.config["SECRET_KEY"] = 'yandexlyceum_secret_key'
+app.config["PERMANENT_SESSION_LIFETIME"] = datetime.timedelta(days=365)
 app.config["DEBUG"] = True
+app.config["UPLOAD_FOLDER"] = r"static/upload_folder/"
+app.config["ALLOWED_FILE_EXTENSIONS"] = [".png", ".jpg", ".jpeg", ".gif", ".mp4", ".avi", ".mov"]
 
 # Добавить ресурсы
 api = Api(app)
@@ -43,12 +45,11 @@ def logout():
 
 
 @app.route("/")
+@login_required
 def index():
     objects = session.query(Object).all()
-    if objects:
-        return render_template("index.html", objects=objects)
-    else:
-        return render_template("error.html", error='К сожалению, объекты отсутсвуют')
+    return render_template("index.html", objects=objects)
+
 
 
 @app.route("/edit_object")
@@ -99,9 +100,27 @@ def add_object():
     form = AddObjectForm()
     if current_user.is_admin():
         if form.validate_on_submit():
+            if session.query(Object).filter(Object.register_number == form.register_number.data).first():
+                return render_template('register.html', title='Регистрация',
+                                       form=form,
+                                       message="Такой объект уже существует!")
             type = session.query(Type).filter(Type.title == form.type.data).first()
             category = session.query(Category).filter(Category.title == form.category.data).first()
-            print(type.id, category)
+
+            file_names = []
+
+            for file in form.files.data:
+                if file.filename.split(".")[-1] not in app.config["ALLOWED_FILE_EXTENSIONS"]:
+                    return render_template(
+                        "add_object.html",
+                        message=f'Разрешенные форматы: {" ".join(app.config["ALLOWED_FILE_EXTENSIONS"])}',
+                        form=form
+                    )
+                file_names.append(file.filename)
+                file_name = secure_filename(file.filename)
+                file.save(app.config["UPLOAD_FOLDER"] + file_name)
+                print(file.filename, file)
+
             object = Object(title=form.title.data,
                             register_number=form.register_number.data,
                             region=form.region.data,
@@ -110,7 +129,8 @@ def add_object():
                             type_id=type.id,
                             belonging_to_unesco=form.belonging_to_unesco.data,
                             especially_valuable=form.especially_valuable.data,
-                            on_map=form.on_map.data)
+                            on_map=form.on_map.data,
+                            files="<>".join(file_names))
             session.add(object)
             session.commit()
             return render_template('index.html', message='Объект добавлен')

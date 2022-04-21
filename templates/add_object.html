@@ -1,23 +1,21 @@
 {% extends "base.html" %}
 
 {% block main %}
-<h1>Добавление объекта</h1>
-<script type="text/javascript">
-if (window.location.href.indexOf('reload')==-1) {
-    window.location.replace(window.location.href+'?reload');
-}
-</script>
-<form action="" method="post">
-    {{form.csrf_token}}
-    <p>
-        {{ form.title.label }}<br>
-        {{ form.title(class="form-control") }}<br>
-        {% for error in form.title.errors %}
-            <p class="alert alert-danger" role="alert">
-                {{ error }}
-            </p>
-        {% endfor %}
-    </p>
+    <h1>Добавление объекта</h1>
+    <form action="" method="post" enctype="multipart/form-data">
+        <div class="alert alert-danger">
+            <p>{{ message }}</p>
+        </div>
+        {{ form.csrf_token }}
+        <p>
+            {{ form.title.label }}<br>
+            {{ form.title(class="form-control") }}<br>
+            {% for error in form.title.errors %}
+                <p class="alert alert-danger" role="alert">
+                    {{ error }}
+                </p>
+            {% endfor %}
+        </p>
 
      <p>
         {{ form.register_number.label }}<br>
@@ -90,6 +88,15 @@ if (window.location.href.indexOf('reload')==-1) {
             </p>
         {% endfor %}
     </p>
+        <p>
+            {{ form.files.label }}<br>
+            {{ form.files(class="form-control", multiple="") }}<br>
+            {% for error in form.files.errors %}
+                <p class="alert alert-danger" role="alert">
+                    {{ error }}
+                </p>
+            {% endfor %}
+        </p>
     <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
 </form>
 {% endblock %}

@@ -1,5 +1,7 @@
 import datetime
-from sqlalchemy import Column, String, Integer, DateTime, Boolean, ForeignKey, orm
+
+import sqlalchemy.types
+from sqlalchemy import Column, String, Integer, DateTime, Text, Boolean, ForeignKey, orm
 from Classes.SqlAlchemyDatabase import SqlAlchemyBase
 
 
@@ -16,12 +18,16 @@ class Object(SqlAlchemyBase):
     type_id = Column(Integer, ForeignKey("types.id"), nullable=False)
     belonging_to_unesco = Column(Boolean, nullable=False)
     especially_valuable = Column(Boolean, nullable=False)
-    on_map = Column(String)
+    on_map = Column(String, nullable=True)
+    files = Column(Text, nullable=True)
+
+
     created_at = Column(DateTime, default=datetime.datetime.now)
     updated_at = Column(DateTime, default=datetime.datetime.now, onupdate=datetime.datetime.now)
+
     category = orm.relation("Category")
     type = orm.relation("Type")
     comment = orm.relationship("Comment", uselist=False, back_populates="object")
 
     def __repr__(self):
-        return f'{self.type.title} ; {self.category.title}'
+        return f"<Object id: {self.id}, title: {self.title}>"
