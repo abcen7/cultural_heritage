@@ -11,7 +11,7 @@ SEX_LIST = ["Мужской", "Женский"]
 lang = Lang("ru")
 
 
-class AddObject(FlaskForm):
+class AddObjectForm(FlaskForm):
     db = SqlAlchemyDatabase()
     session = db.create_session()
     title = StringField(
@@ -42,7 +42,7 @@ class AddObject(FlaskForm):
     )
     choices = [category.title for category in session.query(Category).all()]
     category = RadioField(
-        "Категория", choices=choices,
+        "Категория", choices=[],
         validators=[
             DataRequired(message=lang.get("data_required", ["Категория"])),
         ]
@@ -50,7 +50,7 @@ class AddObject(FlaskForm):
 
     choices = [type.title for type in session.query(Type).all()]
     type = RadioField(
-        "Тип", choices=choices,
+        "Тип", choices=[],
         validators=[
             DataRequired(message=lang.get("data_required", ["Тип"])),
         ]

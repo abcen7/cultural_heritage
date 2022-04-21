@@ -4,7 +4,7 @@ from Classes.SqlAlchemyDatabase import SqlAlchemyDatabase, SqlAlchemyBase
 from data.Forms.CommentForm import CommentForm
 from data.Forms.LoginForm import LoginForm
 from data.Forms.RegisterForm import RegisterForm
-from data.Forms.AddObject import AddObject
+from data.Forms.AddObjectForm import AddObjectForm
 from data.Models.Category import Category
 from data.Models.Comment import Comment
 from data.Models.Object import Object
@@ -91,7 +91,7 @@ def login():
 @app.route('/add_object', methods=['GET', 'POST'])
 @login_required
 def add_object():
-    form = AddObject()
+    form = AddObjectForm()
     if current_user.is_admin():
         if form.validate_on_submit():
             type = session.query(Type).filter(Type.title == form.type.data).first()
