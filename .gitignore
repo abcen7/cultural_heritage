@@ -2,3 +2,4 @@
 .env
 **/__pycache__/
 prepros.config
+static/upload_folder/

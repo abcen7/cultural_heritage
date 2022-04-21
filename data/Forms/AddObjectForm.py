@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import EmailField, PasswordField, BooleanField, SubmitField, StringField, IntegerField, SelectField, \
-    FileField, FieldList, RadioField
+    FileField, FieldList, RadioField, MultipleFileField
 from wtforms.validators import DataRequired, Email, Length, NumberRange
 from Classes.Lang import Lang
 from Classes.SqlAlchemyDatabase import SqlAlchemyDatabase
@@ -23,7 +23,7 @@ class AddObjectForm(FlaskForm):
     register_number = IntegerField(
         "Регистрационный номер",
         validators=[
-            DataRequired(message=lang.get("data_required", ["Регистрационный номер"])),
+            DataRequired(message=lang.get("data_required", ["Регистрационный номер"]))
         ]
     )
 
@@ -42,7 +42,7 @@ class AddObjectForm(FlaskForm):
     )
     choices = [category.title for category in session.query(Category).all()]
     category = RadioField(
-        "Категория", choices=[],
+        "Категория", choices=choices,
         validators=[
             DataRequired(message=lang.get("data_required", ["Категория"])),
         ]
@@ -50,15 +50,16 @@ class AddObjectForm(FlaskForm):
 
     choices = [type.title for type in session.query(Type).all()]
     type = RadioField(
-        "Тип", choices=[],
+        "Тип", choices=choices,
         validators=[
             DataRequired(message=lang.get("data_required", ["Тип"])),
         ]
     )
 
     belonging_to_unesco = BooleanField("Относится к Юнеско")
-
     especially_valuable = BooleanField("Особенно ценный")
     on_map = StringField('Координаты объекта')
+    files = MultipleFileField("Добавить файлы")
+
     submit = SubmitField("Добавить объект")
 

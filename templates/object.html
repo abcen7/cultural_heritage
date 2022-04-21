@@ -9,6 +9,13 @@
         <p>Полный адрес >> {{ obj.full_address }}</p>
         <p>Категория историко-культурного значения >> {{ obj.category.title }}</p>
         <p>Вид объекта >> {{ obj.type.title }}</p>
+    {% for file in obj.files.split("<>") %}
+        {% if file.endswith(".mp4") or file.endswith(".avi") or file.endswith(".mov") %}
+            <video><source type="video/mp4" src="/static/upload_folder/{{ file }}"></video>
+        {% elseif file.endswith(".png") or file.endswith(".jpg") or file.endswith(".jpeg") file.endswith(".gif") %}
+            <img width="1024" src="/static/upload_folder/{{ file }}" alt="">
+        {% endif %}
+    {% endfor %}
     </div>
     <div class="object__comments">
         {% for comment in comments %}
