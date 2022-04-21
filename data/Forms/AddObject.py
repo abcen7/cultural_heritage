@@ -11,7 +11,7 @@ SEX_LIST = ["Мужской", "Женский"]
 lang = Lang("ru")
 
 
-class Add_object(FlaskForm):
+class AddObject(FlaskForm):
     db = SqlAlchemyDatabase()
     session = db.create_session()
     title = StringField(

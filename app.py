@@ -1,14 +1,18 @@
 import datetime
 from flask import Flask, render_template, request, make_response, abort
 from Classes.SqlAlchemyDatabase import SqlAlchemyDatabase, SqlAlchemyBase
+from data.Forms.CommentForm import CommentForm
 from data.Forms.LoginForm import LoginForm
 from data.Forms.RegisterForm import RegisterForm
+from data.Forms.AddObject import AddObject
+from data.Models.Category import Category
+from data.Models.Comment import Comment
 from data.Models.Object import Object
+from data.Models.Type import Type
 from data.Models.User import User
 from werkzeug.utils import redirect
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from flask_restful import reqparse, abort, Api, Resource
-import sqlite3
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
@@ -22,7 +26,7 @@ api = Api(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-db = SqlAlchemyDatabase()
+db = SqlAlchemyDatabase(create=True)
 session = db.create_session()
 
 
@@ -87,7 +91,7 @@ def login():
 @app.route('/add_object', methods=['GET', 'POST'])
 @login_required
 def add_object():
-    form = Add_object()
+    form = AddObject()
     if current_user.is_admin():
         if form.validate_on_submit():
             type = session.query(Type).filter(Type.title == form.type.data).first()

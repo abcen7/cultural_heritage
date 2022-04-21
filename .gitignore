@@ -1,4 +1,5 @@
 .idea
 .env
+db/cultural_heritage.db
 **/__pycache__/
 prepros.config
