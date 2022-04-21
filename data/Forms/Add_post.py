@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import EmailField, PasswordField, BooleanField, SubmitField, StringField, IntegerField, SelectField, \
-    FileField
+    FileField, FieldList, RadioField
 from wtforms.validators import DataRequired, Email, Length, NumberRange
 from Classes.Lang import Lang
 
@@ -10,40 +10,67 @@ lang = Lang("ru")
 
 
 class RegisterForm(FlaskForm):
-    name = StringField(
-        "Имя",
+    title = StringField(
+        "Название",
         validators=[
-            DataRequired(message=lang.get("data_required", ["Имя"])),
-            Length(min=2, max=100, message=lang.get("field_min_len", ["Имя", "2", "100"]))
+            DataRequired(message=lang.get("data_required", ["Название"]))
         ]
     )
-    surname = StringField(
-        "Фамилия",
+    register_number = IntegerField(
+        "Регистрационный номер",
         validators=[
-            DataRequired(message=lang.get("data_required", ["Фамилия"])),
-            Length(min=2, max=100, message=lang.get("field_min_len", ["Фамилия", "2", "100"]))
+            DataRequired(message=lang.get("data_required", ["Регистрационный номер"])),
         ]
     )
-    age = IntegerField(
-        "Возраст",
+
+    region = StringField(
+        "Регион",
         validators=[
-            DataRequired(message=lang.get("data_required", ["Возраст"])),
-            NumberRange(12, 100, message=lang.get("field_range", ["Возраст", "12", "100"]))
+            DataRequired(message=lang.get("data_required", ["Регион"])),
         ]
     )
-    email = EmailField(
-        "Почта",
+
+    address = StringField(
+        "Полный адрес",
         validators=[
-            DataRequired(message=lang.get("data_required", ["Почта"])),
-            Email(message=lang.get("field_invalid", ["Почта"]))
+            DataRequired(message=lang.get("data_required", ["Полный адрес"])),
         ]
     )
-    # TODO: Пароль должен включать в себя спец. символы и буквы заглавного и нижнего регистра
-    password = PasswordField(
-        "Пароль",
+
+    category = FieldList(
+        "Категория", choices=[],
         validators=[
-            DataRequired(message=lang.get("data_required", ["Пароль"])),
-            Length(min=6, max=100, message=lang.get("field_min_len", ["Пароль", "6", "100"]))
+            DataRequired(message=lang.get("data_required", ["Категория"])),
         ]
     )
-    submit = SubmitField("Зарегистрироваться")
+
+    # surname = StringField(
+    #     "Фамилия",
+    #     validators=[
+    #         DataRequired(message=lang.get("data_required", ["Фамилия"])),
+    #         Length(min=2, max=100, message=lang.get("field_min_len", ["Фамилия", "2", "100"]))
+    #     ]
+    # )
+    # age = IntegerField(
+    #     "Возраст",
+    #     validators=[
+    #         DataRequired(message=lang.get("data_required", ["Возраст"])),
+    #         NumberRange(12, 100, message=lang.get("field_range", ["Возраст", "12", "100"]))
+    #     ]
+    # )
+    # email = EmailField(
+    #     "Почта",
+    #     validators=[
+    #         DataRequired(message=lang.get("data_required", ["Почта"])),
+    #         Email(message=lang.get("field_invalid", ["Почта"]))
+    #     ]
+    # )
+    # # TODO: Пароль должен включать в себя спец. символы и буквы заглавного и нижнего регистра
+    # password = PasswordField(
+    #     "Пароль",
+    #     validators=[
+    #         DataRequired(message=lang.get("data_required", ["Пароль"])),
+    #         Length(min=6, max=100, message=lang.get("field_min_len", ["Пароль", "6", "100"]))
+    #     ]
+    # )
+    # submit = SubmitField("Зарегистрироваться")
