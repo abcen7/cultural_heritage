@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block main %}
+    {% if message %}
+        <div class="alert alert-success" role="alert">
+        {{ message }}
+        </div>
+    {% endif %}
+    <form action="" method="post">
+        {{ form.csrf_token }}
+        {{ form.search }}
+        <button class="btn btn-primary">Поиск!</button>
+    </form>
+    <div class="list__objects">
+            {% for obj in objects %}
+                <div class="alert alert-info">
+                    <h1>{{ obj.title }}</h1>
+                    <a href="/objects/{{ obj.id }}">Подробнее</a>
+                    {% if current_user.is_authenticated %}
+                        {% if current_user.is_admin() %}
+                            <a class="btn btn-success" href="/edit_object/{{ obj.id }}">Редактировать</a>
+                            <a class="btn btn-danger" href="/delete_object/{{ obj.id }}">Удалить</a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

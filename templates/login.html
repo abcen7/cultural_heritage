@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block main %}
+    <div class="main__login">
+        <h1>Авторизация</h1>
+        {% if message %}
+            <div class="alert alert-danger">
+                <p>{{ message }}</p>
+            </div>
+        {% endif %}
+        <form action="" method="post">
+            {{ form.csrf_token }}
+            <p>
+                {{ form.email.label }}<br>
+                {{ form.email(class="form-control", type="email") }}<br>
+                {% for error in form.email.errors %}
+                <p class="alert alert-danger" role="alert">
+                    {{ error }}
+                </p>
+                {% endfor %}
+            </p>
+            <p>
+                {{ form.password.label }}<br>
+                {{ form.password(class="form-control", type="password") }}<br>
+                {% for error in form.password.errors %}
+                <p class="alert alert-danger" role="alert">
+                    {{ error }}
+                </p>
+                {% endfor %}
+            </p>
+<!--            <div class="form-control">-->
+<!--                <label class="checkbox" for="remember_me">-->
+<!--                    {{ form.remember_me(class="checkbox") }}-->
+<!--                    <span>Запомнить меня</span>-->
+<!--                </label>-->
+<!--            </div>-->
+            <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
+            <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+        </form>
+    </div>
+{% endblock %}
