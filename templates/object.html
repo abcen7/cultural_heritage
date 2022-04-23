@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block main %}
+    <div class="list-group">
+        <h3>{{ obj.title }}</h3>
+        <table class="table">
+            <thead>
+            <tr class="table-primary">
+                <th scope="col">Номер в реестрe</th>
+                <th scope="col">Регион</th>
+                <th scope="col">Полный адрес</th>
+                <th scope="col">Категория историко-культурного значения</th>
+                <th scope="col">Вид объекта</th>
+                <th scope="col">Принадлежность к Юнеско</th>
+                <th scope="col">Особо ценный объект</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="table-primary">
+                <td scope="row">{{ obj.register_number }}</td>
+                <td scope="row">{{ obj.region }}</td>
+                <td scope="row">{{ obj.full_address }}</td>
+                <td scope="row">{{ obj.category.title }}</td>
+                <td scope="row">{{ obj.type.title }}</td>
+                {% if obj.belonging_to_unesco == 1 %}
+                    <td scope="row">Да</td>
+                {% else %}
+                    <td scope="row">Нет</td>
+                {% endif %}
+                {% if obj.especially_valuable == 1 %}
+                    <td scope="row">{{ obj.especially_valuable }}</td>
+                {% else %}
+                    <td scope="row">Нет</td>
+                {% endif %}
+            </tr>
+            </tbody>
+        </table>
+        {% if obj.on_map %}
+            <div align="center">
+                <H3>На карте</H3>
+                <img src="http://static-maps.yandex.ru/1.x/?size=650%2C450&ll={{ obj.on_map }}&spn=35%2C35&l=map&pt={{ obj.on_map }},comma&scale=1"
+                     alt="Здесь должны бла быть карта">
+            </div>
+        {% endif %}
+        {% for file in obj.files.split("<>") %}
+            {% if file.endswith("mp4") or file.endswith("avi") or file.endswith("mov") %}
+                <video>
+                    <source src="{{ file }}">
+                </video>
+            {% else %}
+                <img width="1024" src="{{ file }}" alt="">
+            {% endif %}
+        {% endfor %}
+    </div>
+    <div class="object__comments">
+        {% for comment in comments %}
+            <div class="border border-primary">
+                <div class="alert alert-info">{{ comment.created_by }}</div>
+                <p>{{ comment.text }}</p>
+            </div>
+        {% endfor %}
+        {% if current_user.is_authenticated %}
+            {% for field in form if field.name != 'csrf_token' %}
+                {% if field.errors %}
+                    {% for error in field.errors %}
+                        <div class="message message-error">{{ error }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+            <form action="" method="post" novalidate>
+                {{ form.csrf_token }}
+                {{ form.comment }}
+                <button type="submit">Написать</button>
+            </form>
+        {% endif %}
+    </div>
+{% endblock %}
